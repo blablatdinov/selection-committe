@@ -43,7 +43,23 @@ class StudyGroup(models.Model): # FIXME: class name
 
     def __str__(self):
         return f'{self.study_direction.title} : {self.year}'
-    
+
+    def calculate_exam_point(self):
+        res = []
+        statements = self.abitur_statements.all()
+        for abitur_statement in self.abitur_statements.all():
+            # Проходимся по заявлениям на это направление подготовки
+            abitur = abitur_statement.abitur
+            abitur.required_exams_points = 0
+            #print(self.study_direction.required_exams)
+            # print(self.study_direction)
+            for required_exam in self.study_direction.required_exams.all():
+                # Проходимся по необходимым экзаменам для этого направления для одного абитуриента
+                abitur.required_exams_points += abitur.exam_results.get(exam=required_exam).points
+            # print(f'{abitur.FIO} - {self.study_direction} - {abitur.required_exams_points}')
+            res.append(abitur)
+        return res
+
 
 
 class Abitur(User):

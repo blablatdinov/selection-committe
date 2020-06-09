@@ -45,7 +45,7 @@ class Abitur(User):
     форма обучения) """
     FIO = models.CharField(max_length=128)
     medal = models.BooleanField(default=False)
-    personal_achievement = models.IntegerField(choices=PERSONAL_ACHIEVEMENTS_CHOICES)
+    personal_achievement = models.IntegerField(choices=PERSONAL_ACHIEVEMENTS_CHOICES, null=True, blank=True)
     
     def get_medal_points(self):
         return 5 if self.medal else 0

@@ -37,10 +37,8 @@ class ProfileView(View):
         # --- Конец сортировки ---
             for j in range(len(abiturs)):
                 if abiturs[j] == abitur:
-                    print(f'\n\n\n{len(data)}, {k}')
                     data[k].place_on_rating = j + 1
                     data[k].exams_points = abiturs[j].required_exams_points
-                    # print(data[k].place_on_rating)
 
         return render(request, self.template, context=context)
 

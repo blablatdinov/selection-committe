@@ -1,0 +1,10 @@
+{% extends 'main/base_main.html' %}
+{% block content %}
+
+  <form method="post" action="{% url 'login' %}">
+  {% csrf_token %}
+  Имя пользователя - {{ form.username }}<br>
+  Пароль - {{ form.password }}
+  <button>Войти</button>
+  </form>
+{% endblock %}

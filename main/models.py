@@ -14,6 +14,9 @@ class Exam(models.Model):
     """ Класс, описывающий экзамены """
     title = models.CharField(max_length=64, verbose_name="Название экзамена")
 
+    def __str__(self):
+        return self.title
+
 
 class StudyDireciton(models.Model):
     """ 
@@ -25,14 +28,21 @@ class StudyDireciton(models.Model):
     title = models.CharField(max_length=128, verbose_name='Название направления подготовки')
     required_exams = models.ManyToManyField(Exam, related_name='study_directions')
 
+    def __str__(self):
+        return self.title
+
 
 class StudyGroup(models.Model): # FIXME: class name
     """ Конкретные данные по направлению подготовки на этот год """
+    study_direction = models.ForeignKey(StudyDireciton, related_name='study_group', on_delete=models.CASCADE)  # FIXME: related_name
     year = models.IntegerField(default=datetime.now().year, verbose_name='Год набора')
     count_budget_places = models.IntegerField(default=0, verbose_name='Кол-во бюджетных мест')
     count_paid_places = models.IntegerField(default=0, verbose_name='Кол-во платных мест')
     distance_learning = models.BooleanField(default=True, verbose_name='Вожможность обучаться заочно')
     fulltime_learning = models.BooleanField(default=True, verbose_name='Возможность обучаться очно')
+
+    def __str__(self):
+        return f'{self.study_direciton.title} : {self.year}'
     
 
 
@@ -50,12 +60,18 @@ class Abitur(User):
     def get_medal_points(self):
         return 5 if self.medal else 0
 
+    def __str__(self):
+        return self.FIO
+
 
 class ExamResult(models.Model):
     """ Класс объеденяющий Экзамен и Абитуриента, в котором добавляется поле результат экзамена """
     exam = models.ForeignKey(Exam, related_name='exam_results', on_delete=models.CASCADE)
     abitur = models.ForeignKey(Abitur, related_name='exam_results', on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.exam.title} - {self.points}
 
 
 
@@ -67,3 +83,6 @@ class AbiturStatement(models.Model):
     fulltime_learning = models.BooleanField(default=True)
     budget_learning = models.BooleanField(default=True)
     is_original_documents = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.abitur.FIO

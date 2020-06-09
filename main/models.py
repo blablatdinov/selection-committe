@@ -42,7 +42,7 @@ class StudyGroup(models.Model): # FIXME: class name
     fulltime_learning = models.BooleanField(default=True, verbose_name='Возможность обучаться очно')
 
     def __str__(self):
-        return f'{self.study_direciton.title} : {self.year}'
+        return f'{self.study_direction.title} : {self.year}'
     
 
 
@@ -71,7 +71,7 @@ class ExamResult(models.Model):
     points = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.exam.title} - {self.points}
+        return f'{self.exam.title} - {self.points}'
 
 
 

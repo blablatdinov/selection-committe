@@ -39,7 +39,7 @@ class StudyGroup(models.Model): # FIXME: class name
     count_budget_places = models.IntegerField(default=0, verbose_name='Кол-во бюджетных мест')
     count_paid_places = models.IntegerField(default=0, verbose_name='Кол-во платных мест')
     distance_learning_places = models.IntegerField(default=0, verbose_name='Вожможность обучаться заочно')
-    fulltime_learning.places = models.IntegerField(default=0, verbose_name='Возможность обучаться очно')
+    fulltime_learning_places = models.IntegerField(default=0, verbose_name='Возможность обучаться очно')
 
     def __str__(self):
         return f'{self.study_direction.title} : {self.year}'

@@ -18,7 +18,7 @@ class Exam(models.Model):
         return self.title
 
 
-class StudyDireciton(models.Model):
+class StudyDirection(models.Model):
     """ 
     Название, очная/заочная форма(каждое направление может быть в 2х формах обучения и 2х формах 
     оплаты), количество мест для различных форм и способов оплаты (вероятно потребуется создание 
@@ -34,7 +34,7 @@ class StudyDireciton(models.Model):
 
 class StudyGroup(models.Model): # FIXME: class name
     """ Конкретные данные по направлению подготовки на этот год """
-    study_direction = models.ForeignKey(StudyDireciton, related_name='study_group', on_delete=models.CASCADE)  # FIXME: related_name
+    study_direction = models.ForeignKey(StudyDirection, related_name='study_group', on_delete=models.CASCADE)  # FIXME: related_name
     year = models.IntegerField(default=datetime.now().year, verbose_name='Год набора')
     count_budget_places = models.IntegerField(default=0, verbose_name='Кол-во бюджетных мест')
     count_paid_places = models.IntegerField(default=0, verbose_name='Кол-во платных мест')

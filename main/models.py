@@ -55,6 +55,7 @@ class StudyGroup(models.Model): # FIXME: class name
             for required_exam in self.study_direction.required_exams.all():
                 # Проходимся по необходимым экзаменам для этого направления для одного абитуриента
                 abitur.required_exams_points += abitur.exam_results.get(exam=required_exam).points
+                abitur.required_exams_points += abitur.get_individuals_points()
             res.append(abitur)
         return res
 
@@ -70,8 +71,11 @@ class Abitur(User):
     medal = models.BooleanField(default=False)
     personal_achievement = models.IntegerField(choices=PERSONAL_ACHIEVEMENTS_CHOICES, null=True, blank=True)
     
-    def get_medal_points(self):
-        return 5 if self.medal else 0
+    def get_individuals_points(self):
+        res = 0
+        res += 5 if self.medal else 0
+        res += self.personal_achievement
+        return res
 
     def __str__(self):
         return self.FIO

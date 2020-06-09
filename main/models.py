@@ -79,7 +79,7 @@ class AbiturStatement(models.Model):
     """ 
     Заявление абитуриента на поступление с указанием параметров направления и наличием оригинала документов 
     """
-    StudyGroup = models.ForeignKey(StudyGroup, related_name='abitur_statements', on_delete=models.CASCADE)
+    study_group = models.ForeignKey(StudyGroup, related_name='abitur_statements', on_delete=models.CASCADE)
     abitur = models.ForeignKey(Abitur, related_name='abitur_statements', on_delete=models.CASCADE)
     fulltime_learning = models.BooleanField(default=True)
     budget_learning = models.BooleanField(default=True)

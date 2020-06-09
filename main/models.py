@@ -27,6 +27,10 @@ class StudyDirection(models.Model):
     """
     title = models.CharField(max_length=128, verbose_name='Название направления подготовки')
     required_exams = models.ManyToManyField(Exam, related_name='study_directions')
+    budget_fulltime = models.IntegerField(default=0, verbose_name='Кол-во бюджетных очных мест')
+    budget_distance = models.IntegerField(default=0, verbose_name='Кол-во бюджетных заочных мест')
+    commerce_fulltime = models.IntegerField(default=0, verbose_name='Кол-во платных очных мест')
+    commerce_distance = models.IntegerField(default=0, verbose_name='Кол-во платных заочных мест')
 
     def __str__(self):
         return self.title
@@ -36,30 +40,23 @@ class StudyGroup(models.Model): # FIXME: class name
     """ Конкретные данные по направлению подготовки на этот год """
     study_direction = models.ForeignKey(StudyDirection, related_name='study_group', on_delete=models.CASCADE)  # FIXME: related_name
     year = models.IntegerField(default=datetime.now().year, verbose_name='Год набора')
-    budget_fulltime = models.IntegerField(default=0, verbose_name='Кол-во бюджетных очных мест')
-    budget_distance = models.IntegerField(default=0, verbose_name='Кол-во бюджетных заочных мест')
-    commerce_fulltime = models.IntegerField(default=0, verbose_name='Кол-во платных очных мест')
-    commerce_distance = models.IntegerField(default=0, verbose_name='Кол-во платных заочных мест')
+    is_fulltime = models.BooleanField(default=True)
+    is_budget = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.study_direction.title} : {self.year}'
 
     def calculate_exam_point(self):
         res = []
-        statements = self.abitur_statements.all()
         for abitur_statement in self.abitur_statements.all():
             # Проходимся по заявлениям на это направление подготовки
             abitur = abitur_statement.abitur
             abitur.required_exams_points = 0
-            #print(self.study_direction.required_exams)
-            # print(self.study_direction)
             for required_exam in self.study_direction.required_exams.all():
                 # Проходимся по необходимым экзаменам для этого направления для одного абитуриента
                 abitur.required_exams_points += abitur.exam_results.get(exam=required_exam).points
-            # print(f'{abitur.FIO} - {self.study_direction} - {abitur.required_exams_points}')
             res.append(abitur)
         return res
-
 
 
 class Abitur(User):
@@ -88,7 +85,6 @@ class ExamResult(models.Model):
 
     def __str__(self):
         return f'{self.exam.title} - {self.points}'
-
 
 
 class AbiturStatement(models.Model):

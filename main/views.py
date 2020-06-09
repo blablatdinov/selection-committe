@@ -1,5 +1,4 @@
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import View
@@ -24,7 +23,6 @@ class ProfileView(View):
         context = {
             'data': data
         }
-        z = data
         for i in range(len(data)):
             data[i].place_on_rating = 0
         # --- Сортировка пузырьком по результатам экзаменов по убыванию ---
@@ -36,16 +34,13 @@ class ProfileView(View):
                     if abiturs[i].required_exams_points < abiturs[i + 1].required_exams_points:
                         abiturs[i], abiturs[i + 1] = abiturs[i + 1], abiturs[i]
                 n += 1
-            # print(f'{data[k].study_group}\n')
-            # for a in abiturs:
-            #     print(f'  {a.FIO} {a.required_exams_points}')
-            # print()
         # --- Конец сортировки ---
             for j in range(len(abiturs)):
                 if abiturs[j] == abitur:
+                    print(f'\n\n\n{len(data)}, {k}')
                     data[k].place_on_rating = j + 1
-                    print(data[k].place_on_rating)
-        #     print(data[k].place_on_rating)
+                    data[k].exams_points = abiturs[j].required_exams_points
+                    # print(data[k].place_on_rating)
 
         return render(request, self.template, context=context)
 

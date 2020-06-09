@@ -6,15 +6,36 @@
     <tr>
       <th scope="col">Название направления</th>
       <th scope="col">Сумма баллов за экзамены</th>
-      <th scope="col">Место</th>
+      <th scope="col">Место в рейтинге</th>
+      <th scope="col">Форма обучения</th>
+      <th scope="col">Плата за обучение</th>
+      <th scope="col">Поданы ли оригиналы</th>
     </tr>
   </thead>
   <tbody>
   {% for datum in data %}
     <tr>
       <th scope="row">{{ datum.study_group }}</th>
-      <td>{{ datum.study_group }}</td>
+      <td>{{ datum.exams_points }}</td>
       <td>{{ datum.place_on_rating }}</td>
+
+      {% if datum.fulltime_learning %}
+        <td>Очно</td>
+      {% else %}
+        <td>Заочно</td>
+      {% endif %}
+
+      {% if datum.budget_learning %}
+      <td>Бюджет</td>
+      {% else %}
+      <td>Коммерция</td>
+      {% endif %}
+
+      {% if datum.is_original_documents %}
+        <td>Да</td>
+      {% else %}
+        <td>Нет</td>
+      {% endif %}
     </tr>
   {% endfor %}
   </tbody>

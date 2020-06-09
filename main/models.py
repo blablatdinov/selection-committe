@@ -36,10 +36,10 @@ class StudyGroup(models.Model): # FIXME: class name
     """ Конкретные данные по направлению подготовки на этот год """
     study_direction = models.ForeignKey(StudyDirection, related_name='study_group', on_delete=models.CASCADE)  # FIXME: related_name
     year = models.IntegerField(default=datetime.now().year, verbose_name='Год набора')
-    count_budget_places = models.IntegerField(default=0, verbose_name='Кол-во бюджетных мест')
-    count_paid_places = models.IntegerField(default=0, verbose_name='Кол-во платных мест')
-    distance_learning_places = models.IntegerField(default=0, verbose_name='Вожможность обучаться заочно')
-    fulltime_learning_places = models.IntegerField(default=0, verbose_name='Возможность обучаться очно')
+    budget_fulltime = models.IntegerField(default=0, verbose_name='Кол-во бюджетных очных мест')
+    budget_distance = models.IntegerField(default=0, verbose_name='Кол-во бюджетных заочных мест')
+    commerce_fulltime = models.IntegerField(default=0, verbose_name='Кол-во платных очных мест')
+    commerce_distance = models.IntegerField(default=0, verbose_name='Кол-во платных заочных мест')
 
     def __str__(self):
         return f'{self.study_direction.title} : {self.year}'
